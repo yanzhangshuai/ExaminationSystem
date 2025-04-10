@@ -52,6 +52,29 @@ builder.Services.AddSwaggerGen(c =>
 });
 ```
 
+#### 日志写入本地
+自定义了一个`FileLoggerProvider` 提供了日志写入本地功能
+```c#
+public static WebApplicationBuilder AddLoggerProvider(this WebApplicationBuilder builder)
+    {
+        var fileOptions = builder.Configuration.GetSection("FileLogger").Get<FileLoggerOptions>();
+
+        var filterOptions = builder.Logging.Services.BuildServiceProvider()
+            .GetRequiredService<IOptionsMonitor<LoggerFilterOptions>>()
+            .CurrentValue;
+
+        if (fileOptions == null) return builder;
+        
+        var fileProvider = new FileLoggerProvider(
+            new OptionsWrapper<FileLoggerOptions>(fileOptions),
+            new OptionsWrapper<LoggerFilterOptions>(filterOptions)
+        );
+        builder.Logging.AddProvider(fileProvider);
+        
+        return builder;
+    }
+```
+
 
 #### 全局异常处理
 增加了两个全局异常，一个是自定义异常，一个是系统异常

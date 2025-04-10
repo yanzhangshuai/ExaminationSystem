@@ -2,6 +2,7 @@ using ExaminationSystem.EntityFrameworkCore;
 using ExaminationSystem.Web.Utils.DependencyInjection;
 using ExaminationSystem.Web.Utils.Exceptions;
 using ExaminationSystem.Web.Utils.HealthChecks;
+using ExaminationSystem.Web.Utils.Logging;
 using ExaminationSystem.Web.Utils.Route;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +12,8 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// 日志写入
+builder.AddLoggerProvider();
 
 builder.Services.AddControllers()
     .AddMvcOptions(o => 

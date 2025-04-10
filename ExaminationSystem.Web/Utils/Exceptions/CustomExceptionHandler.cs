@@ -17,6 +17,7 @@ public class CustomExceptionHandler(ILogger<CustomException> logger, IWebHostEnv
     public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, System.Exception exception, CancellationToken cancellationToken)
     {
         if (exception is not CustomException customException) return false;
+        
         logger.LogError(
             exception, "Exceptions occurred: {Message} {StackTrace} {Source}", exception.Message, exception.StackTrace, exception.Source);
 

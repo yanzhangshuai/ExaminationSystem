@@ -44,8 +44,6 @@ public static class CustomHealthCheckExtensions
         {
             Predicate = _ => true,
             ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse,
-            AllowCachingResponses = true,  // 必须显式启用
-            // CacheDuration 
         });
         return app;
     }
