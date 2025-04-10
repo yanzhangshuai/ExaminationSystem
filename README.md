@@ -4,6 +4,7 @@
 * ExaminationSystem.Application         应用层
 * ExaminationSystem.Web                 WebAPI项目
 * ExaminationSystem.Test                单元测试项目
+* ExaminationSystem.HealthDashboard     健康检查看板
 
 
 `docker-compose.yml` 文件提供了一键部署 `mysql`服务、web服务。 `mysql`服务暴露了 `4315` 端口。同时`Mysql` 服务启动时，会创建`Student`表。
@@ -16,6 +17,11 @@
   }
 }
 ```
+
+### 项目路由
+部署完毕后路由地址
+* http://localhost:4317/swagger/index.html             web项目swagger
+* http://localhost:4318/dashboard#/healthchecks        健康检查数据看板
 
 ### 介绍
 项目中则使用了 `EFCore` 操作数据库。仓储使用了`EntityFrameworkCore.Data.UnitOfWork`
@@ -61,14 +67,35 @@ public static IServiceCollection AddCustomException(this IServiceCollection serv
 ```
 
 #### 健康检查
-健康检查有两个，一个是模拟测试，一个是数据库
+健康检查有四个：1.模拟测试，2.redis，3.http，4.数据库
 ```c#
 public static IServiceCollection AddCustomHealthChecks(this IServiceCollection services)
     {
         services
             .AddHealthChecks()
-            .AddCheck<TestCustomHealthCheck>("test_custom_health_check")
-            .AddDbContextCheck<ExaminationSystemDbContext>("test_db_context_health_check");
+            .AddCheck<TestCustomHealthCheck>(
+                name: "test_health_check",
+                HealthStatus.Unhealthy,
+                tags: ["test"]
+                )
+            .AddRedis(
+                "localhost:6379", 
+                name: "redis_health_check",
+                HealthStatus.Unhealthy,
+                tags: ["redis"]
+                )
+            .AddUrlGroup(
+                new Uri("https://baidu.com"),
+                name: "api_health_check",
+                HealthStatus.Unhealthy,
+                tags: ["baidu"]
+            )
+            .AddDbContextCheck<ExaminationSystemDbContext>(
+                name: "database_health_check",
+                HealthStatus.Unhealthy,
+                tags: ["database"]
+            );
         return services;
     }
+
 ```

@@ -33,7 +33,6 @@ public class Startup
         
         services.AddDbContext<ExaminationSystemDbContext>(options =>
         {
-            var dbConnectionString = "server=localhost;port=4315;database=exam_sym;userid=root;password=123456;";
             options.UseMySql(dbConnectionString, ServerVersion.AutoDetect(dbConnectionString));
         });
 
