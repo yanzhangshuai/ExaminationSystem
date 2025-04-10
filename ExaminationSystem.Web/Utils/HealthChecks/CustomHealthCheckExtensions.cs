@@ -1,6 +1,7 @@
 using ExaminationSystem.EntityFrameworkCore;
+using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
-using Newtonsoft.Json;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 
 namespace ExaminationSystem.Web.Utils.HealthChecks;
@@ -11,34 +12,41 @@ public static class CustomHealthCheckExtensions
     {
         services
             .AddHealthChecks()
-            .AddCheck<TestCustomHealthCheck>("test_custom_health_check")
-            .AddDbContextCheck<ExaminationSystemDbContext>("test_db_context_health_check");
+            .AddCheck<TestCustomHealthCheck>(
+                name: "test_health_check",
+                HealthStatus.Unhealthy,
+                tags: ["test"]
+                )
+            .AddRedis(
+                "localhost:6379", 
+                name: "redis_health_check",
+                HealthStatus.Unhealthy,
+                tags: ["redis"]
+                )
+            .AddUrlGroup(
+                new Uri("https://baidu.com"),
+                name: "api_health_check",
+                HealthStatus.Unhealthy,
+                tags: ["baidu"]
+            )
+            .AddDbContextCheck<ExaminationSystemDbContext>(
+                name: "database_health_check",
+                HealthStatus.Unhealthy,
+                tags: ["database"]
+            );
         return services;
     }
-    
-    
+
+
     public static IEndpointRouteBuilder UseCustomHealthChecks(this IEndpointRouteBuilder app)
     {
-        app.MapHealthChecks("/health", new HealthCheckOptions
-            {
-                ResponseWriter = async (context, report) =>
-                {
-                    context.Response.ContentType = "application/json";
-                    var response = new
-                    {
-                        status = report.Status.ToString(),
-                        checks = report.Entries.Select(entry => new
-                        {
-                            name = entry.Key,
-                            status = entry.Value.Status.ToString(),
-                            description = entry.Value.Description
-                        })
-                    };
-                    await context.Response.WriteAsync(JsonConvert.SerializeObject(response));
-                }
-            })
-            .RequireHost("localhost");
+        app.MapHealthChecks("/healthz", new HealthCheckOptions
+        {
+            Predicate = _ => true,
+            ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse,
+            AllowCachingResponses = true,  // 必须显式启用
+            // CacheDuration 
+        });
         return app;
     }
 }
-

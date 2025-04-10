@@ -27,6 +27,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "mysql", "mysql", "{C9A54ED3
 		init.sql = init.sql
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "health_dashboard", "health_dashboard", "{B4BCAA1E-083D-4B9F-A022-7552E94627E2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExaminationSystem.HealthDashboard", "ExaminationSystem.HealthDashboard\ExaminationSystem.HealthDashboard.csproj", "{4AA20172-86E7-4C14-8E00-F300EA411B33}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,6 +44,7 @@ Global
 		{9D92B79E-421E-4FFA-BDF0-A1A52B029CA3} = {DEB08B70-9C0A-42E0-8035-548821193019}
 		{45AAF49F-48E1-49DB-A0D1-1E7EBFEAD0B7} = {DEB08B70-9C0A-42E0-8035-548821193019}
 		{1A82ADB5-48CD-4F74-875B-9A4775385161} = {F8D0EFCE-6FE8-443B-B19F-46389E43AB51}
+		{4AA20172-86E7-4C14-8E00-F300EA411B33} = {B4BCAA1E-083D-4B9F-A022-7552E94627E2}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{45AAF49F-48E1-49DB-A0D1-1E7EBFEAD0B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -62,5 +67,9 @@ Global
 		{A7E69A28-8E3C-4823-BAF7-BFD6BA39CD4A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A7E69A28-8E3C-4823-BAF7-BFD6BA39CD4A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A7E69A28-8E3C-4823-BAF7-BFD6BA39CD4A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4AA20172-86E7-4C14-8E00-F300EA411B33}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4AA20172-86E7-4C14-8E00-F300EA411B33}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4AA20172-86E7-4C14-8E00-F300EA411B33}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4AA20172-86E7-4C14-8E00-F300EA411B33}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

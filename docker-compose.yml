@@ -5,9 +5,9 @@ networks:
     driver: bridge
 
 services:
-  mysql:
+  examination_system_db:
     image: mysql
-    container_name: examination_system.mysql
+    container_name: examination_system.db
     environment:
       MYSQL_ROOT_PASSWORD: 123456
       MYSQL_DATABASE: exam_sym
@@ -21,7 +21,7 @@ services:
     networks:
       - examination_system
 
-  web:
+  examination_system_web:
     image: examination_system.web
     build:
       context: .
@@ -34,13 +34,31 @@ services:
       - "4317"
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
-      - ConnectionStrings__Mysql=server=mysql;port=3306;database=exam_sym;userid=root;password=123456
+      - ConnectionStrings__Mysql=server=examination_system_db;port=3306;database=exam_sym;userid=root;password=123456
     depends_on:
-      - mysql
+      - examination_system_db
     restart: always
+    
     networks:
       - examination_system
         
-        
-
+  #监控
+  examination_system_health:
+    image: examination_system.health_dashboard
+    build:
+      context: .
+      dockerfile: ExaminationSystem.HealthDashboard/Dockerfile
       
+    container_name: examination_system_health_dashboard
+    ports:
+      - "4318:4318"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      # 监听      
+      - HealthCheckEndpoints__ExaminationSystem=http://examination_system_web:4317/healthz
+    depends_on:
+      - examination_system_web
+    restart: always
+    networks:
+      - examination_system
+
