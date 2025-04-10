@@ -1,0 +1,61 @@
+﻿version: "3.8"
+
+services:
+  
+  examinationsystem.mysql:
+    image: mysql
+    container_name: examinationsystem.mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_DATABASE: exam_sym
+    ports:
+      - "4315:3306"
+    restart: always
+    networks:
+      - examination_system
+
+  examinationsystem.migrator:
+    image: examinationsystem.migrator
+    build:
+      context: .
+      dockerfile: ExaminationSystem.Migrator/Dockerfile
+    container_name: examination_system_migrator
+    ports:
+      - "4316:4316"
+    expose:
+      - "4316"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ConnectionStrings__Mysql=server=localhost;port=4315;database=exam_sym;userid=root;password=123456
+    depends_on:
+      - examinationsystem.mysql
+    networks:
+      - examination_system
+        
+        
+  examinationsystem.web:
+    image: examinationsystem.web
+    build:
+      context: .
+      dockerfile: ExaminationSystem.Web/Dockerfile
+      
+    container_name: examination_system_web
+    ports:
+      - "4317:4317"
+    expose:
+      - "4317"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ConnectionStrings__Mysql=server=localhost;port=4315;database=exam_sym;userid=root;password=123456
+    depends_on:
+      - examinationsystem.migrator
+    restart: always
+    networks:
+      - examination_system
+        
+        
+networks:
+  examination_system:
+    driver: bridge
+      
+      
