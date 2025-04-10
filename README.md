@@ -4,12 +4,12 @@
 * ExaminationSystem.Application         应用层
 * ExaminationSystem.Web                 WebAPI项目
 * ExaminationSystem.Test                单元测试项目
-* ExaminationSystem.HealthDashboard     健康检查看板
+* ExaminationSystem.HealthDashboard     健康检查看板项目
 
 
 `docker-compose.yml` 文件提供了一键部署 `mysql`服务、web服务。 `mysql`服务暴露了 `4315` 端口。同时`Mysql` 服务启动时，会创建`Student`表。
 
-单元测试，Web调试默认使用这个数据库
+单元测试，调试Web项目 都默认使用这个数据库
 ```json 
 {
  "ConnectionStrings": {
@@ -24,11 +24,11 @@
 * http://localhost:4318/dashboard#/healthchecks        健康检查数据看板
 
 ### 介绍
-项目中则使用了 `EFCore` 操作数据库。仓储使用了`EntityFrameworkCore.Data.UnitOfWork`
+项目中则使用了 `EFCore` 操作数据库。仓储使用 `EntityFrameworkCore.Data.UnitOfWork`
 
-`Web 服务` 提供了两个路由，
-1. /student/list 获取学生
-2. /student/generate 随机生成20-50学生，会将数据库之前的数据清空 
+Web项目 提供了两个路由，
+1. /student/list        获取考生
+2. /student/generate    随机生成20-50考生，会清空之前的考生 
 
 
 #### 路由转小写
