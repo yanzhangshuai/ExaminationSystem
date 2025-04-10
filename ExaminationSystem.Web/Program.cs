@@ -4,11 +4,14 @@ using ExaminationSystem.Web.Utils.Exceptions;
 using ExaminationSystem.Web.Utils.HealthChecks;
 using Microsoft.EntityFrameworkCore;
 
+
 #region builder
 
 var builder = WebApplication.CreateBuilder(args);
 
+// builder.AddLoggerProvider();
 // Add services to the container.
+
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -17,6 +20,7 @@ builder.Services.AddProblemDetails();
 
 var dbConnectionString = builder.Configuration.GetConnectionString("Mysql")
                          ?? throw new InvalidOperationException("未配置数据库连接字符串");
+
 builder.Services.AddDbContext<ExaminationSystemDbContext>(options =>
 {
     options.UseMySql(dbConnectionString, ServerVersion.AutoDetect(dbConnectionString));

@@ -12,7 +12,6 @@ public class StudentController(IStudentService studentService) : ControllerBase
     [HttpGet]
     public async Task<IEnumerable<string>> List()
     {
-        throw new CustomException(401,"自定义异常");
         return await studentService.List();
     }
     

@@ -8,6 +8,7 @@ using MySqlConnector;
 
 // 使用.NET通用主机构建器
 var host = Host.CreateDefaultBuilder(args)
+    
     .ConfigureLogging(logging =>
     {
         logging.ClearProviders();
@@ -16,8 +17,8 @@ var host = Host.CreateDefaultBuilder(args)
     })
     .ConfigureServices((context, services) =>
     {
-        var dbConnectionString = context.Configuration.GetConnectionString("Mysql")
-                                 ?? throw new InvalidOperationException("未配置数据库连接字符串");
+
+        var dbConnectionString = context.Configuration.GetConnectionString("Mysql");
         services.AddDbContext<ExaminationSystemDbContext>(options =>
         {
             options.UseMySql(dbConnectionString, ServerVersion.AutoDetect(dbConnectionString),

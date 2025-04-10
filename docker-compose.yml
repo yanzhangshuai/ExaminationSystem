@@ -1,44 +1,52 @@
 ﻿version: "3.8"
 
+networks:
+  examination_system:
+    driver: bridge
+
 services:
-  
-  examinationsystem.mysql:
+  mysql:
     image: mysql
-    container_name: examinationsystem.mysql
+    container_name: examination_system.mysql
     environment:
       MYSQL_ROOT_PASSWORD: 123456
       MYSQL_DATABASE: exam_sym
     ports:
       - "4315:3306"
+    expose:
+      - "3306"
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     restart: always
     networks:
       - examination_system
 
-  examinationsystem.migrator:
-    image: examinationsystem.migrator
-    build:
-      context: .
-      dockerfile: ExaminationSystem.Migrator/Dockerfile
-    container_name: examination_system_migrator
-    ports:
-      - "4316:4316"
-    expose:
-      - "4316"
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Production
-      - ConnectionStrings__Mysql=server=localhost;port=4315;database=exam_sym;userid=root;password=123456
-    depends_on:
-      - examinationsystem.mysql
-    networks:
-      - examination_system
-        
-        
-  examinationsystem.web:
-    image: examinationsystem.web
+
+#  #迁移项目
+#  migrator:
+#    image: examination_system.migrator
+#    build:
+#      context: .
+#      dockerfile: ExaminationSystem.Migrator/Dockerfile
+#    container_name: examination_system_migrator
+#    #    ports:
+#    #      - "4316:4316"
+#    #    expose:
+#    #      - "4316"
+#    environment:
+#      - ConnectionStrings__Mysql=server=mysql;port=3306;database=exam_sym;userid=root;password=123456
+#    depends_on:
+#      - mysql
+#    networks:
+#      - examination_system
+#  
+  
+  web:
+    image: examination_system.web
     build:
       context: .
       dockerfile: ExaminationSystem.Web/Dockerfile
-      
+    
     container_name: examination_system_web
     ports:
       - "4317:4317"
@@ -46,16 +54,14 @@ services:
       - "4317"
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
-      - ConnectionStrings__Mysql=server=localhost;port=4315;database=exam_sym;userid=root;password=123456
+      - ConnectionStrings__Mysql=server=mysql;port=3306;database=exam_sym;userid=root;password=123456
     depends_on:
-      - examinationsystem.migrator
+      - mysql
+#      - migrator
     restart: always
     networks:
       - examination_system
         
         
-networks:
-  examination_system:
-    driver: bridge
-      
+
       

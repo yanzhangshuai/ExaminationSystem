@@ -14,11 +14,15 @@ public class SystemExceptionHandle(ILogger<CustomException> logger, IWebHostEnvi
         var problemDetails = new ProblemDetails
         {
             Status = StatusCodes.Status500InternalServerError,
-            Title = "这是系统异常:An error occurred while processing your request",
+            Title = "This is System Exception"
         };
         if (environment.IsDevelopment())
         {
             problemDetails.Detail = $"Exceptions occurred: {exception.Message} {exception.StackTrace} {exception.Source}";
+        }
+        else
+        {
+            problemDetails.Detail = $"Exceptions occurred: {exception.Message}";
         }
 
         httpContext.Response.StatusCode = problemDetails.Status.Value;

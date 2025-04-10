@@ -23,7 +23,7 @@ public class CustomExceptionHandler(ILogger<CustomException> logger, IWebHostEnv
         var problemDetails = new ProblemDetails
         {
             Status = customException.Code,
-            Title = "这是自定义异常:" + customException.Message,
+            Title = "This is Custom Exception"
         };
         if (environment.IsDevelopment())
         {

@@ -19,8 +19,7 @@ public class Startup
         
         services.AddDbContext<ExaminationSystemDbContext>(options =>
         {
-            // var dbConnectionString = context.Configuration.GetConnectionString("Mysql");
-            var dbConnectionString = "Server=localhost;Database=exam_sym;User=root;Password=123456;";
+            var dbConnectionString = "server=localhost;port=4315;database=exam_sym;userid=root;password=123456;";
             options.UseMySql(dbConnectionString, ServerVersion.AutoDetect(dbConnectionString));
         });
 

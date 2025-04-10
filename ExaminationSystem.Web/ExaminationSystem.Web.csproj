@@ -8,6 +8,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="Jackletter.Microsoft.Extensions.Logging.File" Version="2.1.0" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.15">
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
