@@ -2,6 +2,8 @@ using ExaminationSystem.EntityFrameworkCore;
 using ExaminationSystem.Web.Utils.DependencyInjection;
 using ExaminationSystem.Web.Utils.Exceptions;
 using ExaminationSystem.Web.Utils.HealthChecks;
+using ExaminationSystem.Web.Utils.Route;
+using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.EntityFrameworkCore;
 
 
@@ -9,13 +11,25 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// builder.AddLoggerProvider();
-// Add services to the container.
 
+builder.Services.AddControllers()
+    .AddMvcOptions(o => 
+    {
+        // 路由转小写
+        o.Conventions.Add(new RouteTokenTransformerConvention(new KebabCaseParameterTransformer()));
+    });
+builder.Services.Configure<RouteOptions>(options =>
+{
+    options.LowercaseUrls = true; // 强制全URL小写
+    options.LowercaseQueryStrings = true; // 查询参数小写
+    options.AppendTrailingSlash = false; // 移除末尾斜杠（可选）
+});
+builder.Services.AddSwaggerGen(c =>
+{
+    c.DocumentFilter<KebabCaseSwaggerFilter>();
+});
 
-builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 builder.Services.AddProblemDetails();
 
 var dbConnectionString = builder.Configuration.GetConnectionString("Mysql")

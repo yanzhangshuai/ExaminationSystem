@@ -21,26 +21,6 @@ services:
     networks:
       - examination_system
 
-
-#  #迁移项目
-#  migrator:
-#    image: examination_system.migrator
-#    build:
-#      context: .
-#      dockerfile: ExaminationSystem.Migrator/Dockerfile
-#    container_name: examination_system_migrator
-#    #    ports:
-#    #      - "4316:4316"
-#    #    expose:
-#    #      - "4316"
-#    environment:
-#      - ConnectionStrings__Mysql=server=mysql;port=3306;database=exam_sym;userid=root;password=123456
-#    depends_on:
-#      - mysql
-#    networks:
-#      - examination_system
-#  
-  
   web:
     image: examination_system.web
     build:
@@ -57,7 +37,6 @@ services:
       - ConnectionStrings__Mysql=server=mysql;port=3306;database=exam_sym;userid=root;password=123456
     depends_on:
       - mysql
-#      - migrator
     restart: always
     networks:
       - examination_system
