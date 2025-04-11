@@ -13,7 +13,7 @@
 ```json 
 {
  "ConnectionStrings": {
-    "Mysql": "server=localhost;port=4315;database=exam_sym;userid=test;password=test;"
+    "Mysql": "server=127.0.0.1;port=4315;database=exam_sym;userid=test;password=test;"
   }
 }
 ```
@@ -102,7 +102,7 @@ public static IServiceCollection AddCustomHealthChecks(this IServiceCollection s
                 tags: ["test"]
                 )
             .AddRedis(
-                "localhost:6379", 
+                "127.0.0.1:6379", 
                 name: "redis_health_check",
                 HealthStatus.Unhealthy,
                 tags: ["redis"]

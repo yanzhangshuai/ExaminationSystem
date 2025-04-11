@@ -18,7 +18,7 @@ public static class CustomHealthCheckExtensions
                 tags: ["test"]
                 )
             .AddRedis(
-                "localhost:6379", 
+                "127.0.0.1:6379", 
                 name: "redis_health_check",
                 HealthStatus.Unhealthy,
                 tags: ["redis"]
