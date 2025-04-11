@@ -1,7 +1,7 @@
 ﻿FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 USER $APP_UID
 WORKDIR /app
-EXPOSE 4317
+EXPOSE 8080
 
 # 构建
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build

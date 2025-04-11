@@ -29,7 +29,7 @@ services:
     
     container_name: examination_system_web
     ports:
-      - "4317:4317"
+      - "4317:8080"
     expose:
       - "4317"
     environment:
@@ -51,11 +51,11 @@ services:
       
     container_name: examination_system_health_dashboard
     ports:
-      - "4318:4318"
+      - "4318:8080"
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       # 监听      
-      - HealthCheckEndpoints__ExaminationSystem=http://examination_system_web:4317/healthz
+      - HealthCheckEndpoints__ExaminationSystem=http://examination_system_web:8080/healthz
     depends_on:
       - examination_system_web
     restart: always
