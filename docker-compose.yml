@@ -31,7 +31,7 @@ services:
     ports:
       - "4317:8080"
     expose:
-      - "4317"
+      - "8080"
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       - ConnectionStrings__Mysql=server=examination_system_db;port=3306;database=exam_sym;userid=root;password=123456
@@ -48,7 +48,7 @@ services:
     build:
       context: .
       dockerfile: ExaminationSystem.HealthDashboard/Dockerfile
-      
+
     container_name: examination_system_health_dashboard
     ports:
       - "4318:8080"
