@@ -13,15 +13,15 @@
 ```json 
 {
  "ConnectionStrings": {
-    "Mysql": "server=localhost;port=4315;database=exam_sym;userid=root;password=123456;"
+    "Mysql": "server=localhost;port=4315;database=exam_sym;userid=test;password=test;"
   }
 }
 ```
 
 ### 项目路由
-部署完毕后路由地址
-* http://localhost:4317/swagger/index.html             web项目swagger
-* http://localhost:4318/dashboard#/healthchecks        健康检查数据看板
+部署完毕后路由地址 **wsl2无法localhost**
+* http://127.0.0.1:4317/swagger/index.html             web项目swagger
+* http://127.0.0.1:4318/dashboard#/healthchecks        健康检查数据看板
 
 ### 介绍
 项目中则使用了 `EFCore` 操作数据库。仓储使用 `EntityFrameworkCore.Data.UnitOfWork`

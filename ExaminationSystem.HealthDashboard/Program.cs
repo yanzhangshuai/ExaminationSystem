@@ -1,6 +1,18 @@
+using Serilog;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
+
+// logger
+Log.Logger = new LoggerConfiguration()
+    .ReadFrom.Configuration(builder.Configuration)
+    .CreateLogger();
+
+builder.Logging.ClearProviders();
+builder.Logging.AddSerilog(); 
+
+// HealthCheck
 builder.Services.AddHealthChecksUI(options =>
 {
     var endpoints = builder.Configuration.GetSection("HealthCheckEndpoints");
@@ -25,6 +37,6 @@ app.UseHttpsRedirection();
 app.MapHealthChecksUI(options =>
 {
     options.UIPath = "/dashboard";
-}).RequireHost("localhost");
+});
 app.Run();
 
