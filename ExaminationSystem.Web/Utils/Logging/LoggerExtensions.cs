@@ -11,7 +11,7 @@ public static class LoggerExtensions
 
             .CreateLogger();
 
-        builder.Logging.ClearProviders();
+        // builder.Logging.ClearProviders();
         builder.Logging.AddSerilog(); 
         
         return builder;
