@@ -53,23 +53,16 @@ builder.Services.AddSwaggerGen(c =>
 ```
 
 #### 日志写入本地
-自定义了一个`FileLoggerProvider` 提供了日志写入本地功能
+使用 `Serilog` 将日志写入本地
 ```c#
 public static WebApplicationBuilder AddLoggerProvider(this WebApplicationBuilder builder)
     {
-        var fileOptions = builder.Configuration.GetSection("FileLogger").Get<FileLoggerOptions>();
+        Log.Logger = new LoggerConfiguration()
+            .ReadFrom.Configuration(builder.Configuration)
+            .CreateLogger();
 
-        var filterOptions = builder.Logging.Services.BuildServiceProvider()
-            .GetRequiredService<IOptionsMonitor<LoggerFilterOptions>>()
-            .CurrentValue;
-
-        if (fileOptions == null) return builder;
-        
-        var fileProvider = new FileLoggerProvider(
-            new OptionsWrapper<FileLoggerOptions>(fileOptions),
-            new OptionsWrapper<LoggerFilterOptions>(filterOptions)
-        );
-        builder.Logging.AddProvider(fileProvider);
+        builder.Logging.ClearProviders();
+        builder.Logging.AddSerilog(); 
         
         return builder;
     }
