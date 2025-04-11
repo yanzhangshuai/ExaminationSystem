@@ -32,10 +32,8 @@ services:
       - "4317:4317"
     expose:
       - "4317"
-    volumes:
-      - ./logs:/app/Logs
     environment:
-#      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_ENVIRONMENT=Production
       - ConnectionStrings__Mysql=server=examination_system_db;port=3306;database=exam_sym;userid=root;password=123456
     depends_on:
       - examination_system_db
