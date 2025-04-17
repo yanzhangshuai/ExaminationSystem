@@ -1,9 +1,12 @@
 using ExaminationSystem.EntityFrameworkCore;
+using ExaminationSystem.Web.Utils.Auth;
 using ExaminationSystem.Web.Utils.DependencyInjection;
 using ExaminationSystem.Web.Utils.Exceptions;
 using ExaminationSystem.Web.Utils.HealthChecks;
 using ExaminationSystem.Web.Utils.Logging;
 using ExaminationSystem.Web.Utils.Route;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,7 +19,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.AddLoggerProvider();
 
 builder.Services.AddControllers()
-    .AddMvcOptions(o => 
+    .AddMvcOptions(o =>
     {
         // 路由转小写
         o.Conventions.Add(new RouteTokenTransformerConvention(new KebabCaseParameterTransformer()));
@@ -50,6 +53,7 @@ builder.Services.AddCustomHealthChecks();
 // 依赖注入
 builder.Services.AddDependencyInjection();
 
+builder.Services.AddAuth();
 #endregion
 
 
@@ -57,26 +61,25 @@ builder.Services.AddDependencyInjection();
 
 var app = builder.Build();
 
-// if (app.Environment.IsDevelopment())
-// {
-//     app.UseSwagger();
-//     app.UseSwaggerUI();
-// }
-
-//TODO: 测试，生产环境启用swagger
-app.UseSwagger();
-app.UseSwaggerUI();
-
-app.UseHttpsRedirection();
-
-app.UseAuthorization();
-
-app.MapControllers();
-
 // 统一异常处理
 app.UseExceptionHandler();
 // 健康检查
 app.UseCustomHealthChecks();
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
+
+app.UseHttpsRedirection();
+
+// app.UseRouting();
+
+app.UseAuth();
+
+app.MapControllers();
 
 app.Run();
 

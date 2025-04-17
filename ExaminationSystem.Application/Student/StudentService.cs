@@ -12,15 +12,8 @@ public class StudentService(IUnitOfWork unitOfWork) : IStudentService
 
         var query = repository.MultipleResultQuery().Select(s => s.Id);
         var ids = await repository.SearchAsync(query);
-        if (ids != null && ids.Any())
-        {
-            foreach (var id in ids)
-            {
-                repository.Remove(x => x.Id == id);
-            }
+        await repository.RemoveAsync(x => ids.Contains(x.Id));
 
-            await unitOfWork.SaveChangesAsync();
-        }
 
         var list = new List<Model.Student>();
         var count = new Random().Next(20, 50);
